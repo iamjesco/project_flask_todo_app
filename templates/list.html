@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+	<section class="list py-5">
+			<div class="container py-5">
+				<div class="row">
+					<div class="col-lg-4">
+						<form method="post" novalidate class="mb-5">
+							{{ form.csrf_token() }}
+								{% for field in form if field.widget.input_type != 'hidden' %}
+								<div class="form-group mb-3">
+									{% if field.errors %}
+										{{ field(class="form-control form-control-lg is-invalid", placeholder=field.label.text) }}
+										<div class="invalid-feedback">
+											{% for error in field.errors %}
+												<small>
+													{{ error }}
+												</small>
+											{% endfor %}
+										</div>
+									{% else %}
+										{{ field(class="form-control form-control-lg", placeholder=field.label.text) }}
+									{% endif %}
+								</div>
+							{% endfor %}
+							<button class="btn btn-primary btn-lg">Create Todo</button>
+						</form>
+					</div>
+					<div class="col-lg-8">
+						<div class="accordion" id="accordionExample">
+							{% for todo in todos %}
+
+								<article class="card mb-3">
+								  <header class="card-header d-flex justify-content-between align-items-center">
+								    {{ todo.title}} <a class="btn btn-danger btn-sm text-light" href="{{ url_for('delete', id=todo.id) }}"><i class="fas fa-times"></i></a>
+								  </header>
+								  <section class="card-body">
+									  <p class="card-text">
+										  {{ todo.content}}
+									  </p>
+								  </section>
+								</article>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
+
+{% endblock %}
